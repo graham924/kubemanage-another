@@ -18,6 +18,7 @@ import (
 // @Success   200   {object}  middleware.Response{data=[]model.SysApi,msg=string}  "获取API列表"
 // @Router    /api/sysApi/getAPiList [get]
 func (a *apiController) GetApiList(ctx *gin.Context) {
+	//
 	data, err := v1.CoreV1.System().Api().GetApiList(ctx)
 	if err != nil {
 		v1.Log.ErrorWithCode(globalError.GetError, err)

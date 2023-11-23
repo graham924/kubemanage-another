@@ -8,6 +8,7 @@ import (
 
 var AlwaysAllowPath sets.String
 
+// InstallMiddlewares 安装需要的中间件
 func InstallMiddlewares(ginEngine *gin.RouterGroup) {
 	// 初始化可忽略的请求路径
 	AlwaysAllowPath = sets.NewString(pkg.LoginURL, pkg.LogoutURL, pkg.WebShellURL)

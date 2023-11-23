@@ -5,10 +5,10 @@ default:
   expireTime: 10
 
 mysql:
-  host: "127.0.0.1"
+  host: "192.168.245.100"
   port: "3306"
   user: "root"
-  password: "chenteng"
+  password: "zgy123.com"
   name: "kubemanage"
   maxOpenConns: 100
   maxLifetime: 20

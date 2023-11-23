@@ -27,6 +27,7 @@ func PrintLogo() {
 `))
 }
 
+// Must 必须不能发生错误，否则直接panic
 func Must(err error) {
 	panic(err)
 }

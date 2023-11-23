@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Binding 解析外部的配置文件，默认是 ./config.yaml
 func Binding(filePath string) error {
 	v := viper.New()
 	v.SetConfigFile(filePath)
