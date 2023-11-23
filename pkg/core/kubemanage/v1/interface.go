@@ -6,6 +6,7 @@ import (
 	"github.com/noovertime7/kubemanage/pkg/logger"
 )
 
+// CoreService
 type CoreService interface {
 	WorkFlowServiceGetter
 	CloudGetter
@@ -19,6 +20,7 @@ func New(cfg *config.Config, factory dao.ShareDaoFactory) CoreService {
 	}
 }
 
+// Logger 继承了logger包下的Logger接口
 type Logger interface {
 	logger.Logger
 }

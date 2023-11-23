@@ -6,12 +6,17 @@ import (
 	"github.com/noovertime7/kubemanage/pkg"
 )
 
+// AdminLoginInput admin登陆接口入参结构
 type AdminLoginInput struct {
+	// UserName 用户名
 	UserName string `form:"username" json:"username" comment:"用户名"  validate:"required" example:"用户名"`
+	// Password 密码
 	Password string `form:"password" json:"password" comment:"密码"   validate:"required" example:"密码"`
 }
 
+// AdminLoginOut admin登陆接口出参
 type AdminLoginOut struct {
+	// Token token值
 	Token string `form:"token" json:"token" comment:"token"  example:"token"`
 }
 
@@ -40,7 +45,7 @@ func (a *SetUserAuth) BindingValidParams(ctx *gin.Context) error {
 	return pkg.DefaultGetValidParams(ctx, a)
 }
 
-// BindingValidParams 绑定并校验参数
+// BindingValidParams AdminLoginInput绑定并校验参数
 func (a *AdminLoginInput) BindingValidParams(ctx *gin.Context) error {
 	return pkg.DefaultGetValidParams(ctx, a)
 }

@@ -65,7 +65,7 @@ func NewServerCommand() *cobra.Command {
 	return cmd
 }
 
-// Run 服务器的执行方法
+// Run server启动时的运行方法
 func Run(opt *options.Options) error {
 	// 打印logo
 	utils.PrintLogo()
@@ -80,14 +80,15 @@ func Run(opt *options.Options) error {
 	return nil
 }
 
+// InitLocalK8s 初始化本地k8s连接环境
 func InitLocalK8s() {
-	// 初始化 K8s client，有异常则panic
-	if err := kube.K8s.Init(); err != nil {
+	// 初始化 K8sClient client，有异常则panic
+	if err := kube.K8sClient.Init(); err != nil {
 		utils.Must(err)
 	}
 }
 
-// 优雅启动貔貅服务
+// runServer 优雅启动貔貅服务
 func runServer(opt *options.Options) {
 	srv := &http.Server{
 		Addr:    fmt.Sprintf("%s", config.SysConfig.Default.ListenAddr),

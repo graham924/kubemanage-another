@@ -10,18 +10,29 @@ type DeploymentNameNS struct {
 	NameSpace string `json:"namespace" form:"namespace" comment:"命名空间" validate:"required"`
 }
 
+// DeployCreateInput 创建deployment接口的入参结构
 type DeployCreateInput struct {
-	//DeploymentNameNS
-	Name          string            `json:"name" form:"name" comment:"无状态控制器名称" validate:"required"`
-	NameSpace     string            `json:"namespace" form:"namespace" comment:"命名空间" validate:"required"`
-	Replicas      int32             `json:"replicas" validate:"required" comment:"副本数"`
-	Image         string            `json:"image" validate:"required" comment:"镜像名"`
-	Labels        map[string]string `json:"label" validate:"" comment:"标签"`
-	Cpu           string            `json:"cpu" validate:"" comment:"Cpu限制"`
-	Memory        string            `json:"memory" validate:"" comment:"内存限制"`
-	ContainerPort int32             `json:"container_port" validate:"" comment:"容器端口"`
-	HealthCheck   bool              `json:"health_check" validate:"" comment:"健康检查开关"`
-	HealthPath    string            `json:"health_path" validate:"" comment:"Http健康检查路径"`
+	// DeploymentNameNS
+	// Name 名称
+	Name string `json:"name" form:"name" comment:"无状态控制器名称" validate:"required"`
+	// NameSpace 命名空间
+	NameSpace string `json:"namespace" form:"namespace" comment:"命名空间" validate:"required"`
+	// Replicas 实例数
+	Replicas int32 `json:"replicas" validate:"required" comment:"副本数"`
+	// Image 镜像
+	Image string `json:"image" validate:"required" comment:"镜像名"`
+	// Labels 标签
+	Labels map[string]string `json:"label" validate:"" comment:"标签"`
+	// Cpu Cpu限制
+	Cpu string `json:"cpu" validate:"" comment:"Cpu限制"`
+	// Memory 内存限制
+	Memory string `json:"memory" validate:"" comment:"内存限制"`
+	// ContainerPort 容器端口
+	ContainerPort int32 `json:"container_port" validate:"" comment:"容器端口"`
+	// HealthCheck 健康检查开关
+	HealthCheck bool `json:"health_check" validate:"" comment:"健康检查开关"`
+	// HealthPath Http健康检查路径
+	HealthPath string `json:"health_path" validate:"" comment:"Http健康检查路径"`
 }
 
 type UpdateDeployInput struct {

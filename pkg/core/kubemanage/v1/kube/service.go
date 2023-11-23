@@ -3,7 +3,6 @@ package kube
 import (
 	"context"
 	"encoding/json"
-
 	coreV1 "k8s.io/api/core/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -69,14 +68,14 @@ func (s *service) CreateService(data *kubeDto.ServiceCreateInput) error {
 		service.Spec.Ports[0].NodePort = data.NodePort
 	}
 	//创建service
-	if _, err := K8s.ClientSet.CoreV1().Services(data.NameSpace).Create(context.TODO(), service, metaV1.CreateOptions{}); err != nil {
+	if _, err := K8sCli.ClientSet.CoreV1().Services(data.NameSpace).Create(context.TODO(), service, metaV1.CreateOptions{}); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (s *service) DeleteService(name, namespace string) error {
-	return K8s.ClientSet.CoreV1().Services(namespace).Delete(context.TODO(), name, metaV1.DeleteOptions{})
+	return K8sCli.ClientSet.CoreV1().Services(namespace).Delete(context.TODO(), name, metaV1.DeleteOptions{})
 }
 
 func (s *service) UpdateService(namespace, content string) error {
@@ -84,14 +83,14 @@ func (s *service) UpdateService(namespace, content string) error {
 	if err := json.Unmarshal([]byte(content), Service); err != nil {
 		return err
 	}
-	if _, err := K8s.ClientSet.CoreV1().Services(namespace).Update(context.TODO(), Service, metaV1.UpdateOptions{}); err != nil {
+	if _, err := K8sCli.ClientSet.CoreV1().Services(namespace).Update(context.TODO(), Service, metaV1.UpdateOptions{}); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (s *service) GetServiceList(filterName, namespace string, limit, page int) (*serviceResp, error) {
-	ServiceList, err := K8s.ClientSet.CoreV1().Services(namespace).List(context.TODO(), metaV1.ListOptions{})
+	ServiceList, err := K8sCli.ClientSet.CoreV1().Services(namespace).List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +116,7 @@ func (s *service) GetServiceList(filterName, namespace string, limit, page int) 
 }
 
 func (s *service) GetServiceDetail(name, namespace string) (*coreV1.Service, error) {
-	data, err := K8s.ClientSet.CoreV1().Services(namespace).Get(context.TODO(), name, metaV1.GetOptions{})
+	data, err := K8sCli.ClientSet.CoreV1().Services(namespace).Get(context.TODO(), name, metaV1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -125,13 +124,13 @@ func (s *service) GetServiceDetail(name, namespace string) (*coreV1.Service, err
 }
 
 func (s *service) GetServiceNp() ([]*serviceNp, error) {
-	namespaceList, err := K8s.ClientSet.CoreV1().Namespaces().List(context.TODO(), metaV1.ListOptions{})
+	namespaceList, err := K8sCli.ClientSet.CoreV1().Namespaces().List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
 	var services []*serviceNp
 	for _, namespace := range namespaceList.Items {
-		serviceList, err := K8s.ClientSet.CoreV1().Services(namespace.Name).List(context.TODO(), metaV1.ListOptions{})
+		serviceList, err := K8sCli.ClientSet.CoreV1().Services(namespace.Name).List(context.TODO(), metaV1.ListOptions{})
 		if err != nil {
 			return nil, err
 		}

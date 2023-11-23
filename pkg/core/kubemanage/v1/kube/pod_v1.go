@@ -26,7 +26,7 @@ type PodsNp struct {
 
 // GetPods 获取pod列表支持、过滤、排序以及分页
 func (p *pod) GetPods(filterName, namespace string, limit, page int) (podsResp *PodsResp, err error) {
-	podlist, err := K8s.ClientSet.CoreV1().Pods(namespace).List(context.TODO(), metaV1.ListOptions{})
+	podlist, err := K8sCli.ClientSet.CoreV1().Pods(namespace).List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (p *pod) GetPods(filterName, namespace string, limit, page int) (podsResp *
 
 // GetPodDetail 获取Pod详情
 func (p *pod) GetPodDetail(podName, namespace string) (pod *coreV1.Pod, err error) {
-	podRes, err := K8s.ClientSet.CoreV1().Pods(namespace).Get(context.TODO(), podName, metaV1.GetOptions{})
+	podRes, err := K8sCli.ClientSet.CoreV1().Pods(namespace).Get(context.TODO(), podName, metaV1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (p *pod) GetPodDetail(podName, namespace string) (pod *coreV1.Pod, err erro
 
 // DeletePod 删除Pod
 func (p *pod) DeletePod(podName, namespace string) error {
-	err := K8s.ClientSet.CoreV1().Pods(namespace).Delete(context.TODO(), podName, metaV1.DeleteOptions{})
+	err := K8sCli.ClientSet.CoreV1().Pods(namespace).Delete(context.TODO(), podName, metaV1.DeleteOptions{})
 	if err != nil {
 		return err
 	}
@@ -76,7 +76,7 @@ func (p *pod) UpdatePod(namespace, content string) error {
 	if err := json.Unmarshal([]byte(content), pod); err != nil {
 		return err
 	}
-	_, err := K8s.ClientSet.CoreV1().Pods(namespace).Update(context.TODO(), pod, metaV1.UpdateOptions{})
+	_, err := K8sCli.ClientSet.CoreV1().Pods(namespace).Update(context.TODO(), pod, metaV1.UpdateOptions{})
 	if err != nil {
 		return err
 	}
@@ -105,7 +105,7 @@ func (p *pod) GetPodLog(containerName, podName, namespace string) (log string, e
 		TailLines: &lineLimit,
 	}
 	//获取request的实例
-	req := K8s.ClientSet.CoreV1().Pods(namespace).GetLogs(podName, op)
+	req := K8sCli.ClientSet.CoreV1().Pods(namespace).GetLogs(podName, op)
 	//发起stream连接，得到response.body
 	podLogs, err := req.Stream(context.TODO())
 	if err != nil {
@@ -127,12 +127,12 @@ func (p *pod) GetPodLog(containerName, podName, namespace string) (log string, e
 
 // GetPodNumPerNp 获取namespace下的Pod数量
 func (p *pod) GetPodNumPerNp() (podsNps []*PodsNp, err error) {
-	namespaceList, err := K8s.ClientSet.CoreV1().Namespaces().List(context.TODO(), metaV1.ListOptions{})
+	namespaceList, err := K8sCli.ClientSet.CoreV1().Namespaces().List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
 	for _, namespace := range namespaceList.Items {
-		podList, err := K8s.ClientSet.CoreV1().Pods(namespace.Name).List(context.TODO(), metaV1.ListOptions{})
+		podList, err := K8sCli.ClientSet.CoreV1().Pods(namespace.Name).List(context.TODO(), metaV1.ListOptions{})
 		if err != nil {
 			return nil, err
 		}

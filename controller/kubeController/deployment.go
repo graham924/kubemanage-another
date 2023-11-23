@@ -27,12 +27,14 @@ type deployment struct{}
 // @Success       200  {object}  middleware.Response"{"code": 200, msg="","data": "新增成功}"
 // @Router       /api/k8s/deployment/create [post]
 func (d *deployment) CreateDeployment(ctx *gin.Context) {
+	// 解析参数
 	params := &kubeDto.DeployCreateInput{}
 	if err := params.BindingValidParams(ctx); err != nil {
 		v1.Log.ErrorWithCode(globalError.ParamBindError, err)
 		middleware.ResponseError(ctx, globalError.NewGlobalError(globalError.ParamBindError, err))
 		return
 	}
+	//
 	if err := kube.Deployment.CreateDeployment(params); err != nil {
 		v1.Log.ErrorWithCode(globalError.CreateError, err)
 		middleware.ResponseError(ctx, globalError.NewGlobalError(globalError.CreateError, err))

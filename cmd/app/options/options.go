@@ -52,10 +52,10 @@ func (o *Options) BindFlags(cmd *cobra.Command) {
 
 // Complete completes all the required options
 func (o *Options) Complete() error {
-	// 配置文件优先级，从都到高为：默认配置，环境变量，命令行
+	// 配置文件优先级，从低到高为：默认配置，环境变量，命令行
 	if len(o.ConfigFile) == 0 {
 		// Try to read config file path from env.
-		if cfgFile := os.Getenv("KUBEMANAGE-CONFIG"); cfgFile != "" {
+		if cfgFile := os.Getenv("KUBEMANAGECONFIG"); cfgFile != "" {
 			o.ConfigFile = cfgFile
 		} else {
 			o.ConfigFile = defaultConfigFile
@@ -98,6 +98,7 @@ func (o *Options) register() error {
 
 // registerLogger 注册日志组件
 func (o *Options) registerLogger() error {
+	// 实际上，就是初始化 全局的zap日志记录器
 	return log.InitLogger()
 }
 

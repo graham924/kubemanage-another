@@ -48,7 +48,7 @@ func (c *pods) WebShellHandler(webShellOptions *kubeDto.WebShellOptions, w http.
 	}()
 
 	// 组装 POST 请求
-	req := K8s.ClientSet.CoreV1().RESTClient().Post().
+	req := K8sCli.ClientSet.CoreV1().RESTClient().Post().
 		Resource("pods").
 		Name(webShellOptions.Pod).
 		Namespace(webShellOptions.Namespace).
@@ -63,7 +63,7 @@ func (c *pods) WebShellHandler(webShellOptions *kubeDto.WebShellOptions, w http.
 		}, scheme.ParameterCodec)
 
 	// remotecommand 主要实现了http 转 SPDY 添加X-Stream-Protocol-Version相关header 并发送请求
-	executor, err := remotecommand.NewSPDYExecutor(K8s.Config, "POST", req.URL())
+	executor, err := remotecommand.NewSPDYExecutor(K8sCli.Config, "POST", req.URL())
 	if err != nil {
 		log.ErrorWithErr("remotecommand pod error", err)
 		return err

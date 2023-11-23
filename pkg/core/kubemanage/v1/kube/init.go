@@ -11,9 +11,11 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-var K8s k8s
+// K8sCli 全局的k8s客户端
+var K8sCli K8sClient
 
-type k8s struct {
+// K8sClient 用于操作kubernetes的客户端集合
+type K8sClient struct {
 	// Config 集群配置对象
 	Config *rest.Config
 	// ClientSet kubernetes的客户端集合
@@ -21,7 +23,7 @@ type k8s struct {
 }
 
 // Init 初始化 k8s客户端+配置
-func (k *k8s) Init() error {
+func (k *K8sClient) Init() error {
 	var err error
 	// 记录 集群配置
 	var config *rest.Config

@@ -11,10 +11,12 @@ import (
 	"github.com/noovertime7/kubemanage/cmd/app/config"
 )
 
+// LG 全局的日志记录器
 var LG *zap.Logger
 
-// InitLogger 初始化lg
+// InitLogger 初始化LG
 func InitLogger() (err error) {
+	// 从自定义的配置中，取出关于 Log 的配置
 	cfg := config.SysConfig.Log
 	writeSyncer := getLogWriter(cfg.Filename, cfg.MaxSize, cfg.MaxBackups, cfg.MaxAge)
 	encoder := getEncoder()

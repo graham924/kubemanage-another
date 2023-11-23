@@ -12,6 +12,7 @@ func NewKubeRouter(ginEngine *gin.RouterGroup) {
 }
 
 func (k *kubeRouter) initRoutes(ginEngine *gin.RouterGroup) {
+	// 所有k8s相关的接口，都属于k8s组
 	k8sRoute := ginEngine.Group("/k8s")
 	{
 		k8sRoute.POST("/deployment/create", Deployment.CreateDeployment)

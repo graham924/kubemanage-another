@@ -12,10 +12,13 @@ import (
 	"github.com/noovertime7/kubemanage/dto"
 )
 
+// MenuGetter MenuService对象获取器
 type MenuGetter interface {
+	// Menu 获取一个新的MenuService对象
 	Menu() MenuService
 }
 
+// MenuService Menu菜单相关操作的Service方法
 type MenuService interface {
 	GetMenuByAuthorityID(ctx context.Context, authorityId uint) ([]model.SysMenu, error)
 	GetBassMenu(ctx context.Context) ([]model.SysBaseMenu, error)
@@ -23,6 +26,7 @@ type MenuService interface {
 	AddMenuAuthority(ctx context.Context, menus []model.SysBaseMenu, authorityId uint) error
 }
 
+// menuService MenuService接口的实现类
 type menuService struct {
 	factory dao.ShareDaoFactory
 }

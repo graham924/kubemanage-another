@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// GetClaims 从token中，取出claims值
 func GetClaims(c *gin.Context) (*pkg.CustomClaims, error) {
 	token := c.Request.Header.Get("token")
 	if token == "" {

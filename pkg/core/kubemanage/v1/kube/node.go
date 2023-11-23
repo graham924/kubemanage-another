@@ -2,7 +2,6 @@ package kube
 
 import (
 	"context"
-
 	coreV1 "k8s.io/api/core/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -33,7 +32,7 @@ func (n *node) FromCells(cells []DataCell) []coreV1.Node {
 }
 
 func (n *node) GetNodes(filterName string, limit, page int) (nodesResp *NodeResp, err error) {
-	nodeList, err := K8s.ClientSet.CoreV1().Nodes().List(context.TODO(), metaV1.ListOptions{})
+	nodeList, err := K8sCli.ClientSet.CoreV1().Nodes().List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +59,7 @@ func (n *node) GetNodes(filterName string, limit, page int) (nodesResp *NodeResp
 
 // GetNodeDetail 获取Node详情
 func (n *node) GetNodeDetail(Name string) (*coreV1.Node, error) {
-	nodeRes, err := K8s.ClientSet.CoreV1().Nodes().Get(context.TODO(), Name, metaV1.GetOptions{})
+	nodeRes, err := K8sCli.ClientSet.CoreV1().Nodes().Get(context.TODO(), Name, metaV1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}

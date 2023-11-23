@@ -3,7 +3,6 @@ package kube
 import (
 	"context"
 	"encoding/json"
-
 	nwV1 "k8s.io/api/networking/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -87,14 +86,14 @@ func (i *ingress) CreateIngress(data *kubeDto.IngressCreteInput) error {
 	}
 	ingress.Spec.Rules = ingressRules
 	//创建ingress
-	if _, err := K8s.ClientSet.NetworkingV1().Ingresses(data.NameSpace).Create(context.TODO(), ingress, metaV1.CreateOptions{}); err != nil {
+	if _, err := K8sCli.ClientSet.NetworkingV1().Ingresses(data.NameSpace).Create(context.TODO(), ingress, metaV1.CreateOptions{}); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (i *ingress) DeleteIngress(namespace, name string) error {
-	return K8s.ClientSet.NetworkingV1().Ingresses(namespace).Delete(context.TODO(), name, metaV1.DeleteOptions{})
+	return K8sCli.ClientSet.NetworkingV1().Ingresses(namespace).Delete(context.TODO(), name, metaV1.DeleteOptions{})
 }
 
 func (i *ingress) UpdateIngress(namespace, content string) error {
@@ -102,14 +101,14 @@ func (i *ingress) UpdateIngress(namespace, content string) error {
 	if err := json.Unmarshal([]byte(content), ingress); err != nil {
 		return err
 	}
-	if _, err := K8s.ClientSet.NetworkingV1().Ingresses(namespace).Update(context.TODO(), ingress, metaV1.UpdateOptions{}); err != nil {
+	if _, err := K8sCli.ClientSet.NetworkingV1().Ingresses(namespace).Update(context.TODO(), ingress, metaV1.UpdateOptions{}); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (i *ingress) GetIngressList(filterName, namespace string, limit, page int) (*ingressResp, error) {
-	ingressList, err := K8s.ClientSet.NetworkingV1().Ingresses(namespace).List(context.TODO(), metaV1.ListOptions{})
+	ingressList, err := K8sCli.ClientSet.NetworkingV1().Ingresses(namespace).List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +133,7 @@ func (i *ingress) GetIngressList(filterName, namespace string, limit, page int) 
 }
 
 func (i *ingress) GetIngressDetail(namespace, name string) (*nwV1.Ingress, error) {
-	data, err := K8s.ClientSet.NetworkingV1().Ingresses(namespace).Get(context.TODO(), name, metaV1.GetOptions{})
+	data, err := K8sCli.ClientSet.NetworkingV1().Ingresses(namespace).Get(context.TODO(), name, metaV1.GetOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -142,13 +141,13 @@ func (i *ingress) GetIngressDetail(namespace, name string) (*nwV1.Ingress, error
 }
 
 func (i *ingress) GetIngressNp() ([]*ingressNp, error) {
-	namespaceList, err := K8s.ClientSet.CoreV1().Namespaces().List(context.TODO(), metaV1.ListOptions{})
+	namespaceList, err := K8sCli.ClientSet.CoreV1().Namespaces().List(context.TODO(), metaV1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
 	var ingressnps []*ingressNp
 	for _, namespace := range namespaceList.Items {
-		ingress, err := K8s.ClientSet.NetworkingV1().Ingresses(namespace.Name).List(context.TODO(), metaV1.ListOptions{})
+		ingress, err := K8sCli.ClientSet.NetworkingV1().Ingresses(namespace.Name).List(context.TODO(), metaV1.ListOptions{})
 		if err != nil {
 			return nil, err
 		}

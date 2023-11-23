@@ -79,12 +79,15 @@ func (n *namespace) DeleteNameSpace(ctx *gin.Context) {
 // @Success       200  {object}  middleware.Response"{"code": 200, msg="","data": service.NameSpaceResp}"
 // @Router       /api/k8s/namespace/list [get]
 func (n *namespace) GetNameSpaceList(ctx *gin.Context) {
+	v1.Log.Info("GetNameSpaceList start....")
 	params := &kubeDto.NameSpaceListInput{}
 	if err := params.BindingValidParams(ctx); err != nil {
 		v1.Log.ErrorWithCode(globalError.ParamBindError, err)
 		middleware.ResponseError(ctx, globalError.NewGlobalError(globalError.ParamBindError, err))
 		return
 	}
+	v1.Log.Infof("GetNameSpaceList params parse success: [{}]", params)
+	// 取出全局的NameSpace对象，调用GetNameSpaces，获取ns列表
 	data, err := kube.NameSpace.GetNameSpaces(params.FilterName, params.Limit, params.Page)
 	if err != nil {
 		v1.Log.ErrorWithCode(globalError.GetError, err)

@@ -1,11 +1,13 @@
 package globalError
 
+// GlobalError 自定义的Error对象，实现了builtin/error接口
 type GlobalError struct {
 	Code             int    `json:"code"`    // 业务码
 	Message          string `json:"message"` // 业务码
 	RealErrorMessage string `json:"err_msg"`
 }
 
+// Error 获取 GlobalError 的msg部分，这是实现的builtin/error接口方法
 func (e *GlobalError) Error() string {
 	return e.Message
 }
@@ -48,11 +50,12 @@ var codeTag = map[int]string{
 	LogoutErr: "注销失败",
 }
 
+// GetErrorMsg 根据code获取对应的msg
 func GetErrorMsg(code int) string {
 	return codeTag[code]
 }
 
-// NewGlobalError 4、新建自定义error实例化
+// NewGlobalError 4、创建一个builtin/error对象，GlobalError是实现类，所以直接创建一个GlobalError对象返回即可
 func NewGlobalError(code int, err error) error {
 	// 初次调用得用Wrap方法，进行实例化
 	return &GlobalError{

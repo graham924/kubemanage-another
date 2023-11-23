@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// DefaultGetValidParams 默认绑定并校验参数的方法
 func DefaultGetValidParams(c *gin.Context, params interface{}) error {
 	if err := c.ShouldBind(params); err != nil {
 		return err
