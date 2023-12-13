@@ -8,7 +8,7 @@ mysql:
   host: "192.168.245.100"
   port: "3306"
   user: "root"
-  password: "zgy123.com"
+  password: "xxxxxx"
   name: "kubemanage"
   maxOpenConns: 100
   maxLifetime: 20
